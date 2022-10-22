@@ -33,7 +33,7 @@ public class TestData
 		 ToBeExecuted = toBeExecuted;
 	 }
 	 
-	 public String getTestCse() {
+	 public String getTestCase() {
 		 return TestCase;
 	 }
 	 

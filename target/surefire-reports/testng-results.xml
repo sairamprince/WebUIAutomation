@@ -2,12 +2,12 @@
 <testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2022-10-17T13:03:14 IST" name="Surefire suite" finished-at="2022-10-17T13:03:51 IST" duration-ms="36851">
+  <suite started-at="2022-10-22T20:22:40 IST" name="Surefire suite" finished-at="2022-10-22T20:23:00 IST" duration-ms="20693">
     <groups>
     </groups>
-    <test started-at="2022-10-17T13:03:14 IST" name="Surefire test" finished-at="2022-10-17T13:03:51 IST" duration-ms="36851">
+    <test started-at="2022-10-22T20:22:40 IST" name="Surefire test" finished-at="2022-10-22T20:23:00 IST" duration-ms="20693">
       <class name="com.rgt.runner.WebTest">
-        <test-method signature="test()[pri:0, instance:com.rgt.runner.WebTest@6366ebe0]" started-at="2022-10-17T13:03:16 IST" name="test" finished-at="2022-10-17T13:03:51 IST" duration-ms="35173" status="PASS">
+        <test-method signature="test()[pri:0, instance:com.rgt.runner.WebTest@1189dd52]" started-at="2022-10-22T20:22:40 IST" name="test" finished-at="2022-10-22T20:23:00 IST" duration-ms="20632" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- test -->

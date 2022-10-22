@@ -1,8 +1,7 @@
 package com.rgt.utils;
 
-import java.util.ArrayList;
+import java.util.ArrayList; 
 import java.util.List;
-
 import com.codoid.products.fillo.Connection;
 import com.codoid.products.fillo.Fillo;
 import com.codoid.products.fillo.Recordset;
@@ -52,6 +51,30 @@ public class ExcelUtils
 			e.printStackTrace();
 		}
 		return listTestCaseDetails;
+	}
+		public List<TCMaster> getTCMaster(){
+			List<TCMaster> listTestCases = new ArrayList<TCMaster>();
+			try {
+				String selectQuery = "select * from TC_Master where ToBeExecuted='Y'";
+				Recordset recordset = connection.executeQuery(selectQuery);
+				
+				while(recordset.next()) {
+					
+				
+							TCMaster data = new TCMaster();
+							data.setTC_ID(recordset.getField("TC_ID"));
+							data.setTestCase(recordset.getField("TestCase"));
+							data.setToBeExecuted(recordset.getField("ToBeExecuted"));
+							listTestCases.add(data);
+							//System.out.println(listTestCaseDetails.get(0).getTestCase());
+							
+						}
+				}
+				
+			 catch (Exception e) {
+				e.printStackTrace();
+			}
+		return listTestCases;
 	}
 	
 	
