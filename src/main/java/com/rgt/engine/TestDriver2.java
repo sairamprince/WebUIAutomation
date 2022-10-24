@@ -96,14 +96,13 @@ public class TestDriver2
 									}
 									
 								}else if(action.equalsIgnoreCase("WAIT")) {
-									Thread.sleep(10000);
+									Thread.sleep(Integer.parseInt(value));
 									extentTest.info(steps+"--10 secs");
 									System.out.println(steps +"--"+ value);
 								}else if(action.equalsIgnoreCase("ENTER")) {
 									library.enterValue(driver,locatorType, locatorValue, value);
 									System.out.println(steps +"--"+ value);
 								}else if(action.equalsIgnoreCase("ISDISPLAYED")) {
-									
 		
 									Boolean b=library.isDisplayed(driver,locatorType, locatorValue, value);
 									if(b) {
