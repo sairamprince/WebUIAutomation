@@ -37,7 +37,7 @@ public class TestDriver
 	ExtentSparkReporter spark;
 	ExtentTest extentTest;
 	public final String SCENARIO_SHEET_PATH = System.getProperty("user.dir")+"/resources/datafiles/TC_Master.xlsx";
-	public final String ExtentReport_Path = System.getProperty("user.dir")+"/src/test/java/com/rgt/reports/WebAutomationReport.html";
+	public final String ExtentReport_Path = System.getProperty("user.dir")+"/resources/htmlreports/WebAutomationReport.html";
 	
 	public void startExecution() throws IOException {
 		extentreport = new ExtentReports();
@@ -80,45 +80,45 @@ public class TestDriver
 							prop =base.init_properties();
 							if (value.isEmpty() || value.equals("NA")) {
 								driver = base.init_driver(prop.getProperty("browser"));
-								extentTest.info(steps+"--"+prop.getProperty("browser"));
+								extentTest.pass(steps+"--"+prop.getProperty("browser"));
 								//extentreport.createTest(excel.getTestdata().get(i).getTestCse()).log(Status.PASS, steps);
 								System.out.println(steps);
 								
 							} else {
 								
 								driver = base.init_driver(value);
-								extentTest.info(steps+"--"+value);
+								extentTest.pass(steps+"--"+value);
 								System.out.println(steps +"--"+ value);
 							}
 							break;
 							
 						case "CLOSE_BROWSER":
 							driver.quit();
-							extentTest.info( steps);
+							extentTest.pass( steps);
 							System.out.println(steps +"--"+ value);
 							break;
 							
 						case "ENTER_URL":
 							if (value.isEmpty() || value.equals("NA")) {
 								driver.get(prop.getProperty("url"));
-								extentTest.info(steps+"--"+prop.getProperty("browser"));
+								extentTest.pass(steps+"--"+prop.getProperty("browser"));
 								System.out.println(steps +"--"+ value);
 							} else {
 								driver.get(value);
-								extentTest.info( steps +"--"+ value);
+								extentTest.pass( steps +"--"+ value);
 								System.out.println(steps +"--"+ value);
 							}
 							break;
 							
 						case "WAIT":
 							Thread.sleep(10000);
-							extentTest.info(steps+"--10 secs");
+							extentTest.pass(steps+"--10 secs");
 							System.out.println(steps +"--"+ value);
 							break;
 							
 						case "IMPLICITLYWAIT":
 							driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-							extentTest.info( steps+"--Implicit Wait");
+							extentTest.pass( steps+"--Implicit Wait");
 							System.out.println(steps +"--"+ value);
 							break;
 							
@@ -131,11 +131,11 @@ public class TestDriver
 							if(action.equalsIgnoreCase("ENTER")) {
 								element.clear();
 								element.sendKeys(value);
-								extentTest.info(steps+"--"+value);
+								extentTest.pass(steps+"--"+value);
 								System.out.println(steps+"--"+ value);
 							}else if(action.equalsIgnoreCase("CLICK")) {
 								element.click();
-								extentTest.info(steps+"--"+value);
+								extentTest.pass(steps+"--"+value);
 								System.out.println(steps+"--"+ value);
 							}
 							else if(action.equalsIgnoreCase("ISDISPLAYED")) {
@@ -143,7 +143,7 @@ public class TestDriver
 								
 								if(bol) {
 								Assert.assertEquals(bol, value);
-								extentTest.info(steps+"--"+value);
+								extentTest.pass(steps+"--"+value);
 								}else {
 									extentTest.fail(steps+"--"+bol);
 								}
@@ -153,13 +153,13 @@ public class TestDriver
 								String elemenText = element.getText();
 								Assert.assertEquals(value, elemenText);
 								//Assert.assertEquals(value, elemenText);
-								extentTest.info(steps+"--"+value);
+								extentTest.pass(steps+"--"+value);
 								System.out.println("text from element : " +elemenText);
 								System.out.println(steps+"--"+ value);
 							} else if(action.equalsIgnoreCase("EXPLICITWAIT")) {
 								WebDriverWait wait= new WebDriverWait(driver, 20);
 								wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(locatorValue)));
-								extentTest.info(steps+"--"+value);
+								extentTest.pass(steps+"--"+value);
 								System.out.println(steps +"--"+ value);
 							}
 							
@@ -173,22 +173,22 @@ public class TestDriver
 							if(action.equalsIgnoreCase("ENTER")) {
 								element.clear();
 								element.sendKeys(value);
-								extentTest.info(steps+"--"+value);
+								extentTest.pass(steps+"--"+value);
 								System.out.println(steps+"--"+ value);
 							}else if(action.equalsIgnoreCase("CLICK")) {
 								element.click();
-								extentTest.info(steps+"--"+value);
+								extentTest.pass(steps+"--"+value);
 								System.out.println(steps+"--"+ value);
 							}
 							else if(action.equalsIgnoreCase("isDisplayed")) {
 								element.isDisplayed();
-								extentTest.info(steps+"--"+value);
+								extentTest.pass(steps+"--"+value);
 								System.out.println(steps+"--"+ value);
 							}else if(action.equalsIgnoreCase("VERIFYEXPECTEDMESSAGE")) {
 								String elemenText = element.getText();
 								Assert.assertEquals(value, elemenText);
 								System.out.println("text from element : " +elemenText);
-								extentTest.info(steps+"--"+elemenText);
+								extentTest.pass(steps+"--"+elemenText);
 								System.out.println(steps+"--"+ value);
 							}else if (action.equalsIgnoreCase("SELECTDROPDOWNVISIBLETEXT")) {
 								Select selectDropDFwon=new Select(element);
@@ -197,7 +197,7 @@ public class TestDriver
 							}else if(action.equalsIgnoreCase("SELECTDROPDWONBYVALUE")) {
 								Select selectDropDowon=new Select(element);
 								selectDropDowon.deselectByValue(value);
-								extentTest.info(steps);
+								extentTest.pass(steps);
 								System.out.println(steps+"--"+ value);
 							} else if(action.equalsIgnoreCase("EXPLICITWAIT")) {
 								WebDriverWait wait= new WebDriverWait(driver, 20);
@@ -206,7 +206,7 @@ public class TestDriver
 							}else if(action.equalsIgnoreCase("VERIFYTEXT")) {
 								String actualText=element.getText();
 								if(value.contentEquals(actualText)) {
-									extentTest.info(steps+"--"+"Actual:"+actualText+"--Expected:"+value);
+									extentTest.pass(steps+"--"+"Actual:"+actualText+"--Expected:"+value);
 								}else {
 									extentTest.fail(steps+"--"+"Actual:"+actualText+"--Expected:"+value);
 								}
