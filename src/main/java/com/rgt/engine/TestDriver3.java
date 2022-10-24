@@ -38,6 +38,7 @@ public class TestDriver3
 	ExtentReports extentreport;
 	ExtentSparkReporter spark;
 	ExtentTest extentTest;
+	Select selectDropDown;
 	public final String SCENARIO_SHEET_PATH = System.getProperty("user.dir")+"/resources/datafiles/TC_Master.xlsx";
 	public final String ExtentReport_Path = System.getProperty("user.dir")+"/src/test/java/com/rgt/reports/WebAutomationReport.html";
 	
@@ -111,7 +112,7 @@ public class TestDriver3
 							break;
 							
 						case "WAIT":
-							Thread.sleep(Integer.parseInt(value));
+							Thread.sleep(Integer.parseInt(value)*1000);
 							extentTest.pass(steps+"--"+value+"sec");
 							System.out.println(steps +"--"+ value);
 							break;
@@ -131,193 +132,65 @@ public class TestDriver3
 							break;
 						case "ISDISPLAYED":
 							element=commonUtils.getLocators(driver,locatorType, locatorValue);
-							element.sendKeys(value);
-							extentTest.pass(steps+":"+value);
+							element.isDisplayed();
+							extentTest.pass(steps+" : Element displayed");
 							System.out.println(steps +"--"+ value);
 							break;
+						
+						case "CLICK":
+							element=commonUtils.getLocators(driver,locatorType, locatorValue);
+							element.click();
+							extentTest.pass(steps+" : Elemenr clicked");
+							System.out.println(steps +"--"+ value);
+							break;
+						
+						case "EXPLICITWAIT":
+							commonUtils.explicitWait(driver, locatorType, locatorValue);
+							extentTest.pass(steps+" : Wait for Element Visible");
+							System.out.println(steps +"--"+ value);
+							break;
+							
+						case "VERIFYTEXT":
+							element=commonUtils.getLocators(driver,locatorType, locatorValue);
+							String actualText=element.getText();
+							if(value.contentEquals(actualText)) {
+								extentTest.pass(steps+"--"+"Actual:"+actualText+"--Expected:"+value);
+							}else {
+								extentTest.fail(steps+"--"+"Actual:"+actualText+"--Expected:"+value);
+							}
+								
+							System.out.println(steps+"--"+ value);
+							break;
+							
+						case "SELECTBYVISIBILETEXT":
+							element=commonUtils.getLocators(driver,locatorType, locatorValue);
+							selectDropDown=new Select(element);
+							selectDropDown.selectByVisibleText(value);
+							extentTest.pass( steps+":Selected Value By "+action+" is "+value);
+							System.out.println(steps+"--"+ value);
+							break;
+						
+						case "SELECTBYVALUE":
+							element=commonUtils.getLocators(driver,locatorType, locatorValue);
+							selectDropDown=new Select(element);
+							selectDropDown.selectByVisibleText(value);
+							System.out.println(steps+"--"+ value);
+							break;
+						case "SELECTBYINDEX":
+							element=commonUtils.getLocators(driver,locatorType, locatorValue);
+							selectDropDown=new Select(element);
+							selectDropDown.selectByIndex(Integer.parseInt(value));
+							
+							System.out.println(steps+"--"+ value);
+							break;
+							
 						default:;
 						}
-						switch(locatorType)
-						{
-						case"id":
-							element = driver.findElement(By.id(locatorValue));
-							if(action.equalsIgnoreCase("ENTER")) {
-								element.clear();
-								element.sendKeys(value);
-								extentTest.info(steps+"--"+value);
-								System.out.println(steps+"--"+ value);
-							}else if(action.equalsIgnoreCase("CLICK")) {
-								element.click();
-								extentTest.info(steps+"--"+value);
-								System.out.println(steps+"--"+ value);
-							}
-							else if(action.equalsIgnoreCase("ISDISPLAYED")) {
-								Boolean bol=element.isDisplayed();
-								
-								if(bol) {
-								Assert.assertEquals(bol, value);
-								extentTest.info(steps+"--"+value);
-								}else {
-									extentTest.fail(steps+"--"+bol);
-								}
-			
-								System.out.println(steps+"--"+ value);
-							}else if(action.equalsIgnoreCase("VERIFYEXPECTEDMESSAGE")) {
-								String elemenText = element.getText();
-								Assert.assertEquals(value, elemenText);
-								//Assert.assertEquals(value, elemenText);
-								extentTest.info(steps+"--"+value);
-								System.out.println("text from element : " +elemenText);
-								System.out.println(steps+"--"+ value);
-							} else if(action.equalsIgnoreCase("EXPLICITWAIT")) {
-								WebDriverWait wait= new WebDriverWait(driver, 20);
-								wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(locatorValue)));
-								extentTest.info(steps+"--"+value);
-								System.out.println(steps +"--"+ value);
-							}
-							
-							
-							locatorType = null;
-							break;
-							
-						case"xpath":
-							element = driver.findElement(By.xpath(locatorValue));
-							//String ExplicitWaiElement = "By.xpath("+locatorValue+")";
-							if(action.equalsIgnoreCase("ENTER")) {
-								element.clear();
-								element.sendKeys(value);
-								extentTest.info(steps+"--"+value);
-								System.out.println(steps+"--"+ value);
-							}else if(action.equalsIgnoreCase("CLICK")) {
-								element.click();
-								extentTest.info(steps+"--"+value);
-								System.out.println(steps+"--"+ value);
-							}
-							else if(action.equalsIgnoreCase("isDisplayed")) {
-								element.isDisplayed();
-								extentTest.info(steps+"--"+value);
-								System.out.println(steps+"--"+ value);
-							}else if(action.equalsIgnoreCase("VERIFYEXPECTEDMESSAGE")) {
-								String elemenText = element.getText();
-								Assert.assertEquals(value, elemenText);
-								System.out.println("text from element : " +elemenText);
-								extentTest.info(steps+"--"+elemenText);
-								System.out.println(steps+"--"+ value);
-							}else if (action.equalsIgnoreCase("SELECTDROPDOWNVISIBLETEXT")) {
-								Select selectDropDFwon=new Select(element);
-								selectDropDFwon.deselectByVisibleText(value);
-								System.out.println(steps+"--"+ value);
-							}else if(action.equalsIgnoreCase("SELECTDROPDWONBYVALUE")) {
-								Select selectDropDowon=new Select(element);
-								selectDropDowon.deselectByValue(value);
-								extentTest.info(steps);
-								System.out.println(steps+"--"+ value);
-							} else if(action.equalsIgnoreCase("EXPLICITWAIT")) {
-								WebDriverWait wait= new WebDriverWait(driver, 20);
-								wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(locatorValue)));
-								System.out.println(steps +"--"+ value);
-							}else if(action.equalsIgnoreCase("VERIFYTEXT")) {
-								String actualText=element.getText();
-								if(value.contentEquals(actualText)) {
-									extentTest.info(steps+"--"+"Actual:"+actualText+"--Expected:"+value);
-								}else {
-									extentTest.fail(steps+"--"+"Actual:"+actualText+"--Expected:"+value);
-								}
-								System.out.println(steps+"--"+ value);
-							}
-							
-							locatorType = null;
-							break;
-							
-						case "className":
-							element = driver.findElement(By.className(locatorValue));
-							if (action.equalsIgnoreCase("sendKeys")) {
-								element.clear();
-								element.sendKeys(value);
-							} else if(action.equalsIgnoreCase("click")) {
-								element.click();
-							} else if(action.equalsIgnoreCase("isDisplayed")) {
-								element.isDisplayed();
-							}else if(action.equalsIgnoreCase("getText")) {
-								String elementText = element.getText();
-								Assert.assertEquals(value, elementText);
-								System.out.println("text from element : " +elementText);
-								System.out.println(steps+"--"+ value);
-							}else if(action.equalsIgnoreCase("EXPLICITWAIT")) {
-								WebDriverWait wait= new WebDriverWait(driver, 20);
-								wait.until(ExpectedConditions.visibilityOfElementLocated(By.className(locatorValue)));
-								System.out.println(steps +"--"+ value);
-							}
-							
-							locatorType = null;
-							break;
-							
-						case "cssSelector":
-							element = driver.findElement(By.cssSelector(locatorValue));
-							if (action.equalsIgnoreCase("sendKeys")) {
-								element.clear();
-								element.sendKeys(value);
-							} else if(action.equalsIgnoreCase("click")) {
-								element.click();
-							} else if(action.equalsIgnoreCase("isDisplayed")) {
-								element.isDisplayed();
-							}else if(action.equalsIgnoreCase("getText")) {
-								String elementText = element.getText();
-								Assert.assertEquals(value, elementText);
-								System.out.println("text from element : " +elementText);
-								System.out.println(steps+"--"+ value);
-							}else if(action.equalsIgnoreCase("EXPLICITWAIT")) {
-								WebDriverWait wait= new WebDriverWait(driver, 20);
-								wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(locatorValue)));
-								System.out.println(steps +"--"+ value);
-							}
-							
-							locatorType = null;
-							break;
-							
-						case "name":
-							element = driver.findElement(By.name(locatorValue));
-							if (action.equalsIgnoreCase("sendKeys")) {
-								element.clear();
-								element.sendKeys(value);
-							} else if(action.equalsIgnoreCase("click")) {
-								element.click();
-							} else if(action.equalsIgnoreCase("isDisplayed")) {
-								element.isDisplayed();
-							}else if(action.equalsIgnoreCase("getText")) {
-								String elementText = element.getText();
-								Assert.assertEquals(value, elementText);
-								System.out.println("text from element : " +elementText);
-								System.out.println(steps+"--"+ value);
-							} else if(action.equalsIgnoreCase("EXPLICITWAIT")) {
-								WebDriverWait wait= new WebDriverWait(driver, 20);
-								wait.until(ExpectedConditions.visibilityOfElementLocated(By.name(locatorValue)));
-								System.out.println(steps +"--"+ value);
-							}
-							
-							locatorType = null;
-							break;
-							
-						case "linkText":
-							element = driver.findElement(By.linkText(locatorValue));
-							element.click();
-							System.out.println(steps+"--"+ value);
-							
-							locatorType = null;
-							break;
-							
-						case "partialLinkText":
-							element = driver.findElement(By.partialLinkText(locatorValue));
-							element.click();
-							System.out.println(steps+"--"+ value);
-							
-							locatorType = null;
-							break;
-							
+													
 							
 							
 						}
-					}
+					
 					
 					catch(Exception e) {
 						extentTest.fail(steps+"--"+e);
@@ -326,8 +199,11 @@ public class TestDriver3
 				}
 					}
 		extentreport.flush();
-	}
-		}
-		}
-	}
+	
+		
+		 }
+	  }
+   }
+}
+	
 

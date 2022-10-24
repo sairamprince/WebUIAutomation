@@ -28,7 +28,7 @@ public class Base {
 				driver.manage().window().maximize();
 			}
 		} else if(browserName.equals("firefox")){
-			System.setProperty("webdriver.gecko.driver", "/resources/drivers/geckodriver,exe");
+			System.setProperty("webdriver.gecko.driver",  System.getProperty("user.dir")+"/resources/drivers/geckodriver.exe");
 			driver = new FirefoxDriver();
 		}
 		return driver;
